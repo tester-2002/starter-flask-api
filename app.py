@@ -145,6 +145,7 @@ def handle_connect():
 @socketio.on("vote")
 def submit_vote_socketio(data):
     username = data.get("username")
+
     user_type = User.query.filter_by(username=username).first()
 
     if user_type and user_type.vote == 0:
