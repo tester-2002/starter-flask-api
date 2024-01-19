@@ -161,6 +161,20 @@ def handle_vote(data):
 
     # Optionally, you can emit a message back to the client
     emit("vote_result", {"message": "Vote submitted successfully"}, broadcast=True)
+@socketio.on("vote")
+def submit_vote_socketio(data):
+    username = data.get("username")
+    user_type = User.query.filter_by(username=username).first()
+
+    if user_type and user_type.vote == 0:
+        user_type.vote = 1
+        db.session.commit()
+        socketio.emit(
+            "update_votes", {"username": username, "votes": 1}, broadcast=True
+        )
+
+    return jsonify({"message": "Vote submitted successfully"})
+
 
 @app.before_first_request
 def create_tables():
