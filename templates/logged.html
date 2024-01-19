@@ -79,15 +79,24 @@
         <a class="logout-link" href="/logout">Logout</a>
     </div>
 
-    <form method="post" action="/vote">
+    <form id="voteForm" method="post" action="/vote">
         <h1>Vote &#128077;</h1>
-        <button id="voteButton" onclick="vote()">Submit Vote</button>
+        <button id="voteButton">Submit Vote</button>
         <a href="#" id="helpLink"><button class="help-button">Need Help</button></a>
     </form>
     <script>
-        document.getElementById("voteButton").addEventListener("click", function () {
-            // Handle vote button click
-            document.getElementById("voteForm").submit();
+        document.getElementById("voteButton").addEventListener("click", function (event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+
+            // Disable the button to prevent multiple votes
+            document.getElementById("voteButton").disabled = true;
+
+            // Send a request to the server to update the vote
+            socket.emit("vote", { username: {{ username | tojson }} });
+
+        // Optionally, you can show a message or perform other actions after the vote is submitted
+        console.log("Vote submitted!");
         });
 
         document.getElementById("helpLink").addEventListener("click", function (event) {
@@ -119,20 +128,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
     <script>
-        var socket = io.connect("https://poll-f3o8.onrender.com:10000");
-
-
-        function vote() {
-            // Disable the button to prevent multiple votes
-            document.getElementById("voteButton").disabled = true;
-
-            // Send a request to the server to update the vote
-            socket.emit("vote", { username: {{ username | tojson }} });
-
-        // Optionally, you can show a message or perform other actions after the vote is submitted
-        console.log("Vote submitted!");
-        }
-    </script>
-</body>
+        var socket = io.connect("http://" + document.domain + ":" + location.port);
+    </script></body>
 
 </html>
