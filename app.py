@@ -159,6 +159,9 @@ def submit_vote_socketio(data):
 @app.before_first_request
 def create_tables():
     db.create_all()
+    User.query.delete()
+    Help.query.delete()
+    db.session.commit()
     
 if __name__ == "__main__":
     db.create_all()
