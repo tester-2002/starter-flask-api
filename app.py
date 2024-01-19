@@ -160,7 +160,10 @@ def handle_vote(data):
     # Optionally, you can emit a message back to the client
     emit("vote_result", {"message": "Vote submitted successfully"}, broadcast=True)
 
-
+@app.before_first_request
+def create_tables():
+    db.create_all()
+    
 if __name__ == "__main__":
     db.create_all()
     socketio.run(app,allow_unsafe_werkzeug=True)
