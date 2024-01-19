@@ -3,9 +3,11 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from flask_socketio import SocketIO, send, emit
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 import os
 
 app = Flask(__name__)
+CORS(app) 
 socketio = SocketIO(app)
 app.secret_key = "123456"  # Change this to a secure, random key
 
