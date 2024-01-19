@@ -8,9 +8,9 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 app.secret_key = "123456"  # Change this to a secure, random key
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.sqlite3"
+db_path = os.path.join("/tmp", "database.sqlite3")
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
 db = SQLAlchemy(app)
 
 
@@ -163,6 +163,4 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
 
-    socketio.run(app, debug=True)
-    # OR
-    # app.run(debug=True)
+    socketio.run(app)
