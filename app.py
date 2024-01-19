@@ -3,6 +3,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from flask_socketio import SocketIO, send, emit
 from flask_sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
 socketio = SocketIO(app)
