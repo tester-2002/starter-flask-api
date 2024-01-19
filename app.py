@@ -18,7 +18,6 @@ db = SQLAlchemy(app)
 
 
 class User(db.Model):
-    __tablename__ = 'user'  # Add this line
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     vote = db.Column(db.Integer, nullable=False, default=0)
@@ -144,24 +143,6 @@ def handle_connect():
 
 
 @socketio.on("vote")
-def handle_vote(data):
-    # Extract the username from the data
-    username = data["username"]
-
-    # Update the vote in the database
-    user = User.query.filter_by(username=username).first()
-    if not user:
-        # If the user does not exist, create a new user and add it to the database
-        new_user = User(username=username, vote=0)
-        db.session.add(new_user)
-        db.session.commit()
-    else:
-        # Flash a message indicating that the username is already taken
-        flash("Username already taken. Please choose another.")
-
-    # Optionally, you can emit a message back to the client
-    emit("vote_result", {"message": "Vote submitted successfully"}, broadcast=True)
-@socketio.on("vote")
 def submit_vote_socketio(data):
     username = data.get("username")
     user_type = User.query.filter_by(username=username).first()
@@ -174,7 +155,6 @@ def submit_vote_socketio(data):
         )
 
     return jsonify({"message": "Vote submitted successfully"})
-
 
 @app.before_first_request
 def create_tables():
