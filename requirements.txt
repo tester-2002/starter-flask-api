@@ -1,4 +1,4 @@
 Flask==2.1.1
 Flask-SocketIO
 Flask-SQLAlchemy
-
+gunicorn==20.1.0
