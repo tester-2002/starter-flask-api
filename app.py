@@ -166,4 +166,4 @@ def create_tables():
     
 if __name__ == "__main__":
     db.create_all()
-    socketio.run(app,allow_unsafe_werkzeug=True)
+    socketio.run(app,secure=True,allow_unsafe_werkzeug=True)
